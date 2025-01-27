@@ -16,13 +16,13 @@ uint32_t current_EXTI_LINE = 0;
 
 void maskPhaseInterrupts()
 {
-    EXTI->IMR &= ~(1 << current_EXTI_LINE);
-    EXTI->PR |= 1 << PHASE_A_EXTI_LINE;
-    EXTI->PR |= 1 << PHASE_B_EXTI_LINE;
-    EXTI->PR |= 1 << PHASE_C_EXTI_LINE;
+    EXTI->IMR1 &= ~(1 << current_EXTI_LINE);
+    EXTI->RPR1 |= 1 << PHASE_A_EXTI_LINE;
+    EXTI->RPR1 |= 1 << PHASE_B_EXTI_LINE;
+    EXTI->RPR1 |= 1 << PHASE_C_EXTI_LINE;
 }
 
-void enableCompInterrupts() { EXTI->IMR |= (1 << current_EXTI_LINE); }
+void enableCompInterrupts() { EXTI->IMR1 |= (1 << current_EXTI_LINE); }
 
 void changeCompInput()
 {
@@ -42,11 +42,11 @@ void changeCompInput()
         current_EXTI_LINE = PHASE_B_EXTI_LINE;
     }
     if (rising) {
-        EXTI->RTSR |= (1 << current_EXTI_LINE);
-        EXTI->FTSR &= ~(1 << current_EXTI_LINE);
+        EXTI->RTSR1 |= (1 << current_EXTI_LINE);
+        EXTI->FTSR1 &= ~(1 << current_EXTI_LINE);
     } else {
-        EXTI->FTSR |= (1 << current_EXTI_LINE);
-        EXTI->RTSR &= ~(1 << current_EXTI_LINE);
+        EXTI->FTSR1 |= (1 << current_EXTI_LINE);
+        EXTI->RTSR1 &= ~(1 << current_EXTI_LINE);
     }
 }
 

@@ -247,7 +247,7 @@ void SystemCoreClockUpdate(void)
         SystemCoreClock = LSE_VALUE;
         break;
 
-    case RCC_CFGR_SWS_PLL: /* PLL used as system clock */
+    case 0x00000010UL: /* PLL used as system clock */
         /* PLL_VCO = (HSE_VALUE or HSI_VALUE / PLLM) * PLLN
            SYSCLK = PLL_VCO / PLLR
            */
@@ -267,7 +267,7 @@ void SystemCoreClockUpdate(void)
         SystemCoreClock = pllvco / pllr;
         break;
 
-    case RCC_CFGR_SWS_HSI: /* HSI used as system clock */
+    case 0UL: /* HSI used as system clock */
     default: /* HSI used as system clock */
         hsidiv = (1UL << ((READ_BIT(RCC->CR, RCC_CR_HSIDIV)) >> RCC_CR_HSIDIV_Pos));
         SystemCoreClock = (HSI_VALUE / hsidiv);

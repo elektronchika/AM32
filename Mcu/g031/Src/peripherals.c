@@ -74,7 +74,7 @@ void SystemClock_Config(void)
 
     /* Main PLL configuration and activation */
     LL_RCC_PLL_ConfigDomain_SYS(LL_RCC_PLLSOURCE_HSI, LL_RCC_PLLM_DIV_1, 8,
-        LL_RCC_PLLR_DIV_2);
+    LL_RCC_PLLR_DIV_2);
     LL_RCC_PLL_Enable();
     LL_RCC_PLL_EnableDomain_SYS();
     while (LL_RCC_PLL_IsReady() != 1) {
@@ -677,24 +677,24 @@ void MX_DMA_Init(void)
     NVIC_EnableIRQ(DMA1_Channel2_3_IRQn);
 }
 
-void MX_TIM6_Init(void)
-{
-    LL_TIM_InitTypeDef TIM_InitStruct = { 0 };
+//void MX_TIM6_Init(void)
+//{
+//    LL_TIM_InitTypeDef TIM_InitStruct = { 0 };
 
-    LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM6);
+//    LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM6);
 
-    /* TIM6 interrupt Init */
-    NVIC_SetPriority(TIM6_DAC_LPTIM1_IRQn, 2);
-    NVIC_EnableIRQ(TIM6_DAC_LPTIM1_IRQn);
+//    /* TIM6 interrupt Init */
+//    NVIC_SetPriority(TIM6_DAC_LPTIM1_IRQn, 2);
+//    NVIC_EnableIRQ(TIM6_DAC_LPTIM1_IRQn);
 
-    TIM_InitStruct.Prescaler = 63;
-    TIM_InitStruct.CounterMode = LL_TIM_COUNTERMODE_UP;
-    TIM_InitStruct.Autoreload = 1000000 / LOOP_FREQUENCY_HZ;
-    LL_TIM_Init(TIM6, &TIM_InitStruct);
-    LL_TIM_DisableARRPreload(TIM6);
-    LL_TIM_SetTriggerOutput(TIM6, LL_TIM_TRGO_RESET);
-    LL_TIM_DisableMasterSlaveMode(TIM6);
-}
+//    TIM_InitStruct.Prescaler = 63;
+//    TIM_InitStruct.CounterMode = LL_TIM_COUNTERMODE_UP;
+//    TIM_InitStruct.Autoreload = 1000000 / LOOP_FREQUENCY_HZ;
+//    LL_TIM_Init(TIM6, &TIM_InitStruct);
+//    LL_TIM_DisableARRPreload(TIM6);
+//    LL_TIM_SetTriggerOutput(TIM6, LL_TIM_TRGO_RESET);
+//    LL_TIM_DisableMasterSlaveMode(TIM6);
+//}
 void MX_GPIO_Init(void)
 {
     /* GPIO Ports Clock Enable */
