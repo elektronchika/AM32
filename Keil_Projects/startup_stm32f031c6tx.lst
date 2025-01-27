@@ -346,12 +346,13 @@ ARM Macro Assembler    Page 6
               00000000 
 Command Line: --debug --xref --diag_suppress=9931,A1950W --cpu=Cortex-M0 --depe
 nd=.\objects\startup_stm32f031c6tx.d -o.\objects\startup_stm32f031c6tx.o -I.\RT
-E\_AM32REF_F031 -IC:\KeilPacks\ARM\CMSIS\5.9.0\CMSIS\Core\Include -IC:\KeilPack
-s\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include --predefin
-e="__EVAL SETA 1" --predefine="__MICROLIB SETA 1" --predefine="__UVISION_VERSIO
-N SETA 538" --predefine="_RTE_ SETA 1" --predefine="STM32F031x6 SETA 1" --prede
-fine="_RTE_ SETA 1" --list=startup_stm32f031c6tx.lst ..\Mcu\F031\Startup\mdk\st
-artup_stm32f031c6tx.s
+E\_AM32REF_F031 -IC:\Users\lazar.chervenkov\AppData\Local\Arm\Packs\ARM\CMSIS\5
+.9.0\CMSIS\Core\Include -IC:\Users\lazar.chervenkov\AppData\Local\Arm\Packs\Kei
+l\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include --predefine="__
+EVAL SETA 1" --predefine="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SET
+A 539" --predefine="_RTE_ SETA 1" --predefine="STM32F031x6 SETA 1" --predefine=
+"_RTE_ SETA 1" --list=startup_stm32f031c6tx.lst ..\Mcu\F031\Startup\mdk\startup
+_stm32f031c6tx.s
 
 
 

@@ -755,7 +755,7 @@ uint16_t getSmoothedCurrent()
 void getBemfState()
 {
     uint8_t current_state = 0;
-#ifdef MCU_F031
+#if defined(MCU_F031) || defined(MCU_G031)
     if (step == 1 || step == 4) {
         current_state = PHASE_C_EXTI_PORT->IDR & PHASE_C_EXTI_PIN;
     }
@@ -864,7 +864,7 @@ void interruptRoutine()
         }
     }
         for (int i = 0; i < filter_level; i++) {
-#ifdef MCU_F031
+#if defined(MCU_F031) || defined(MCU_G031)
             if (((current_GPIO_PORT->IDR & current_GPIO_PIN) == !(rising))) {
 #else
             if (getCompOutputLevel() == rising) {
@@ -1676,6 +1676,12 @@ int main(void)
     GPIOF->BRR = LL_GPIO_PIN_7; // out of standby mode
     GPIOA->BRR = LL_GPIO_PIN_11;
 #endif
+#ifdef MCU_G031
+    GPIOF->BSRR = LL_GPIO_PIN_6; // uncomment to take bridge out of standby mode
+                                 // and set oc level
+    GPIOF->BRR = LL_GPIO_PIN_7; // out of standby mode
+    GPIOA->BRR = LL_GPIO_PIN_11;
+#endif
 
 #ifdef USE_LED_STRIP
     send_LED_RGB(125, 0, 0);
@@ -1767,7 +1773,7 @@ int main(void)
 #if defined(FIXED_DUTY_MODE) || defined(FIXED_SPEED_MODE)
         setInput();
 #endif
-#ifdef MCU_F031
+#if defined(MCU_F031) || defined(MCU_G031)
         if (input_ready) {
             processDshot();
             input_ready = 0;
@@ -1896,7 +1902,7 @@ if(zero_crosses < 5){
             last_average_interval = average_interval;
         }
 
-#ifndef MCU_F031
+#if !defined(MCU_F031) && !defined(MCU_G031)
         if (dshot_telemetry && (commutation_interval > DSHOT_PRIORITY_THRESHOLD)) {
             NVIC_SetPriority(IC_DMA_IRQ_NAME, 0);
             NVIC_SetPriority(COM_TIMER_IRQ, 1);
