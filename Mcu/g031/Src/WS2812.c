@@ -57,17 +57,17 @@ uint16_t led_Buffer[28] = {
 //    LL_TIM_EnableCounter(TIM16);
 //}
 
-void send_LED_RGB(uint8_t red, uint8_t green, uint8_t blue)
-{
-    if (!dma_busy) {
-        uint32_t twenty_four_bit_color_number = green << 16 | red << 8 | blue;
+//void send_LED_RGB(uint8_t red, uint8_t green, uint8_t blue)
+//{
+//    if (!dma_busy) {
+//        uint32_t twenty_four_bit_color_number = green << 16 | red << 8 | blue;
 
-        for (int i = 0; i < 24; i++) {
-            led_Buffer[i + 2] = (((twenty_four_bit_color_number >> (23 - i)) & 1) * 40) + 20;
-        }
-        send_LED_DMA();
-    }
-}
+//        for (int i = 0; i < 24; i++) {
+//            led_Buffer[i + 2] = (((twenty_four_bit_color_number >> (23 - i)) & 1) * 40) + 20;
+//        }
+//        send_LED_DMA();
+//    }
+//}
 
 //void WS2812_Init(void)
 //{

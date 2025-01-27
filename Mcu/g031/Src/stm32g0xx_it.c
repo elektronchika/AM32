@@ -182,7 +182,7 @@ void DMA1_Channel1_IRQHandler(void)
             sendDshotDma();
             compute_dshot_flag = 1;
         }
-        EXTI->SWIER1 |= LL_EXTI_LINE_15;
+        EXTI->SWIER1 |= LL_EXTI_LINE_3;
 
         return;
     }
@@ -198,7 +198,7 @@ void DMA1_Channel1_IRQHandler(void)
         DMA1->IFCR |= DMA_IFCR_CGIF1;
         DMA1_Channel1->CCR = 0x00;
         transfercomplete();
-        EXTI->SWIER1 |= LL_EXTI_LINE_15;
+        EXTI->SWIER1 |= LL_EXTI_LINE_3;
     } else if (LL_DMA_IsActiveFlag_TE1(DMA1) == 1) {
         LL_DMA_ClearFlag_GI1(DMA1);
     }
@@ -234,59 +234,62 @@ void DMA1_Channel2_3_IRQHandler(void)
  * @brief This function handles ADC1, COMP1 and COMP2 interrupts (COMP
  * interrupts through EXTI lines 17 and 18).
  */
-void ADC1_COMP_IRQHandler(void)
-{
-  if (LL_EXTI_IsActiveFallingFlag_0_31(LL_EXTI_LINE_18)) {
-    if((INTERVAL_TIMER->CNT) > (average_interval >> 1)){
-      LL_EXTI_ClearFallingFlag_0_31(LL_EXTI_LINE_18);
-      interruptRoutine();
-    }else{
-      if(getCompOutputLevel() == rising){
-          LL_EXTI_ClearFallingFlag_0_31(LL_EXTI_LINE_18);
-          return;
-      }
-    }
-    return;
-  }
+//void ADC1_COMP_IRQHandler(void)
+//{
+//  if (LL_EXTI_IsActiveFallingFlag_0_31(LL_EXTI_LINE_18)) {
+//    if((INTERVAL_TIMER->CNT) > (average_interval >> 1)){
+//      LL_EXTI_ClearFallingFlag_0_31(LL_EXTI_LINE_18);
+//      interruptRoutine();
+//    }else{
+//      if(getCompOutputLevel() == rising){
+//          LL_EXTI_ClearFallingFlag_0_31(LL_EXTI_LINE_18);
+//          return;
+//      }
+//    }
+//    return;
+//  }
 
-  if (LL_EXTI_IsActiveRisingFlag_0_31(LL_EXTI_LINE_18)) {
-    if((INTERVAL_TIMER->CNT) > (average_interval >> 1)){
-      LL_EXTI_ClearRisingFlag_0_31(LL_EXTI_LINE_18);
-      interruptRoutine();
-    }else{
-      if(getCompOutputLevel() == rising){
-          LL_EXTI_ClearRisingFlag_0_31(LL_EXTI_LINE_18);
-          return;
-      }
-    }
-    return;
-  }
-  if (LL_EXTI_IsActiveFallingFlag_0_31(LL_EXTI_LINE_17)) {
-    if((INTERVAL_TIMER->CNT) > (average_interval >> 1)){
-      LL_EXTI_ClearFallingFlag_0_31(LL_EXTI_LINE_17);
-      interruptRoutine();
-    }else{
-      if(getCompOutputLevel() == rising){
-          LL_EXTI_ClearFallingFlag_0_31(LL_EXTI_LINE_17);
-          return;
-      }
-    }
-    return;
-  }
+//  if (LL_EXTI_IsActiveRisingFlag_0_31(LL_EXTI_LINE_18)) {
+//    if((INTERVAL_TIMER->CNT) > (average_interval >> 1)){
+//      LL_EXTI_ClearRisingFlag_0_31(LL_EXTI_LINE_18);
+//      interruptRoutine();
+//    }else{
+//      if(getCompOutputLevel() == rising){
+//          LL_EXTI_ClearRisingFlag_0_31(LL_EXTI_LINE_18);
+//          return;
+//      }
+//    }
+//    return;
+//  }
+//  if (LL_EXTI_IsActiveFallingFlag_0_31(LL_EXTI_LINE_17)) {
+//    if((INTERVAL_TIMER->CNT) > (average_interval >> 1)){
+//      LL_EXTI_ClearFallingFlag_0_31(LL_EXTI_LINE_17);
+//      interruptRoutine();
+//    }else{
+//      if(getCompOutputLevel() == rising){
+//          LL_EXTI_ClearFallingFlag_0_31(LL_EXTI_LINE_17);
+//          return;
+//      }
+//    }
+//    return;
+//  }
 
-  if (LL_EXTI_IsActiveRisingFlag_0_31(LL_EXTI_LINE_17)) {
-    if((INTERVAL_TIMER->CNT) > (average_interval >> 1)){
-      LL_EXTI_ClearRisingFlag_0_31(LL_EXTI_LINE_17);
-      interruptRoutine();
-    }else{
-      if(getCompOutputLevel() == rising){
-          LL_EXTI_ClearRisingFlag_0_31(LL_EXTI_LINE_17);
-          return;
-      }
-    }
-    return;
-  }
-}
+//  if (LL_EXTI_IsActiveRisingFlag_0_31(LL_EXTI_LINE_17)) {
+//    if((INTERVAL_TIMER->CNT) > (average_interval >> 1)){
+//      LL_EXTI_ClearRisingFlag_0_31(LL_EXTI_LINE_17);
+//      interruptRoutine();
+//    }else{
+//      if(getCompOutputLevel() == rising){
+//          LL_EXTI_ClearRisingFlag_0_31(LL_EXTI_LINE_17);
+//          return;
+//      }
+//    }
+//    return;
+//  }
+//}
+
+
+
 
 /**
  * @brief This function handles TIM3 global interrupt.
@@ -317,6 +320,7 @@ void TIM16_IRQHandler(void)
 
     if (LL_TIM_IsActiveFlag_UPDATE(TIM16) == 1) {
         LL_TIM_ClearFlag_UPDATE(TIM16);
+			  tenKhzRoutine();
         // update_interupt++;
     }
     /* USER CODE END TIM3_IRQn 0 */
@@ -351,29 +355,64 @@ void TIM14_IRQHandler(void)
 }
 
 /* USER CODE BEGIN 1 */
-void DMA1_Ch4_7_DMAMUX1_OVR_IRQHandler(void)
-{
-    /* USER CODE BEGIN DMA1_Ch4_7_DMAMUX1_OVR_IRQn 0 */
-    if (LL_DMA_IsActiveFlag_HT6(DMA1)) {
-    }
-    if (LL_DMA_IsActiveFlag_TC6(DMA1) == 1) {
-        LL_DMA_ClearFlag_GI6(DMA1);
+//void DMA1_Ch4_7_DMAMUX1_OVR_IRQHandler(void)
+//{
+//    /* USER CODE BEGIN DMA1_Ch4_7_DMAMUX1_OVR_IRQn 0 */
+//    if (LL_DMA_IsActiveFlag_HT6(DMA1)) {
+//    }
+//    if (LL_DMA_IsActiveFlag_TC6(DMA1) == 1) {
+//        LL_DMA_ClearFlag_GI6(DMA1);
 
-        LL_DMA_DisableChannel(DMA1, LL_DMA_CHANNEL_6);
-        LL_TIM_DisableAllOutputs(TIM16);
-        LL_TIM_DisableCounter(TIM16);
-        dma_busy = 0;
-    } else if (LL_DMA_IsActiveFlag_TE6(DMA1) == 1) {
-        LL_DMA_DisableChannel(DMA1, LL_DMA_CHANNEL_6);
-        LL_TIM_DisableAllOutputs(TIM16);
-        LL_TIM_DisableCounter(TIM16);
-        dma_busy = 0;
-        LL_DMA_ClearFlag_GI6(DMA1);
+//        LL_DMA_DisableChannel(DMA1, LL_DMA_CHANNEL_6);
+//        LL_TIM_DisableAllOutputs(TIM16);
+//        LL_TIM_DisableCounter(TIM16);
+//        dma_busy = 0;
+//    } else if (LL_DMA_IsActiveFlag_TE6(DMA1) == 1) {
+//        LL_DMA_DisableChannel(DMA1, LL_DMA_CHANNEL_6);
+//        LL_TIM_DisableAllOutputs(TIM16);
+//        LL_TIM_DisableCounter(TIM16);
+//        dma_busy = 0;
+//        LL_DMA_ClearFlag_GI6(DMA1);
+//    }
+//}
+
+void EXTI0_1_IRQHandler(){
+    if (LL_EXTI_IsActiveRisingFlag_0_31(LL_EXTI_LINE_1) != RESET) {
+        LL_EXTI_ClearRisingFlag_0_31(LL_EXTI_LINE_1);
+        interruptRoutine();
     }
+    if (LL_EXTI_IsActiveFallingFlag_0_31(LL_EXTI_LINE_1) != RESET) {
+        LL_EXTI_ClearFallingFlag_0_31(LL_EXTI_LINE_1);
+        interruptRoutine();
+    }
+
+}
+
+void EXTI2_3_IRQHandler(){
+  if(LL_EXTI_IsActiveRisingFlag_0_31(LL_EXTI_LINE_3)){
+    LL_EXTI_ClearRisingFlag_0_31(LL_EXTI_LINE_3);
+    processDshot();
+   }
+
 }
 
 void EXTI4_15_IRQHandler(void)
 {
-    LL_EXTI_ClearRisingFlag_0_31(LL_EXTI_LINE_15);
-    processDshot();
+
+    if (LL_EXTI_IsActiveRisingFlag_0_31(LL_EXTI_LINE_7) != RESET) {
+        LL_EXTI_ClearRisingFlag_0_31(LL_EXTI_LINE_7);
+        interruptRoutine();
+    }
+    if (LL_EXTI_IsActiveFallingFlag_0_31(LL_EXTI_LINE_7) != RESET) {
+        LL_EXTI_ClearFallingFlag_0_31(LL_EXTI_LINE_7);
+        interruptRoutine();
+    }
+    if (LL_EXTI_IsActiveRisingFlag_0_31(LL_EXTI_LINE_14) != RESET) {
+        LL_EXTI_ClearRisingFlag_0_31(LL_EXTI_LINE_14);
+        interruptRoutine();
+    }
+    if (LL_EXTI_IsActiveFallingFlag_0_31(LL_EXTI_LINE_14) != RESET) {
+        LL_EXTI_ClearFallingFlag_0_31(LL_EXTI_LINE_14);
+        interruptRoutine();
+    }
 }

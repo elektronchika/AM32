@@ -1773,7 +1773,7 @@ int main(void)
 #if defined(FIXED_DUTY_MODE) || defined(FIXED_SPEED_MODE)
         setInput();
 #endif
-#if defined(MCU_F031) || defined(MCU_G031)
+#if defined(MCU_F031)
         if (input_ready) {
             processDshot();
             input_ready = 0;

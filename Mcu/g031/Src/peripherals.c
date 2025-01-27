@@ -28,7 +28,7 @@ void initCorePeripherals(void)
     SystemClock_Config();
     MX_GPIO_Init();
     MX_DMA_Init();
-    MX_COMP2_Init();
+ //   MX_COMP2_Init();
     MX_TIM1_Init();
     MX_TIM2_Init();
 #ifdef USE_TIMER_3_CHANNEL_1
@@ -42,7 +42,7 @@ void initCorePeripherals(void)
 #endif
     MX_TIM14_Init();
     MX_TIM17_Init();
-    MX_TIM6_Init();
+//    MX_TIM6_Init();
     telem_UART_Init();
 #ifdef USE_LED_STRIP
     WS2812_Init();
@@ -697,9 +697,74 @@ void MX_DMA_Init(void)
 //}
 void MX_GPIO_Init(void)
 {
+    LL_EXTI_InitTypeDef EXTI_InitStruct = { 0 };
+    LL_GPIO_InitTypeDef GPIO_InitStruct = { 0 };
     /* GPIO Ports Clock Enable */
     LL_IOP_GRP1_EnableClock(LL_IOP_GRP1_PERIPH_GPIOA);
     LL_IOP_GRP1_EnableClock(LL_IOP_GRP1_PERIPH_GPIOB);
+    LL_IOP_GRP1_EnableClock(LL_IOP_GRP1_PERIPH_GPIOC);
+
+
+    LL_GPIO_ResetOutputPin(GPIOA, LL_GPIO_PIN_11);  // stspin specific
+    LL_GPIO_ResetOutputPin(GPIOF, LL_GPIO_PIN_6);   // stspin specific
+    LL_GPIO_ResetOutputPin(GPIOF, LL_GPIO_PIN_7);   // stspin specific
+
+    LL_EXTI_SetEXTISource(SYSCFG_EXTI_PORTA, SYSCFG_EXTI_LINEA);
+    LL_EXTI_SetEXTISource(SYSCFG_EXTI_PORTB, SYSCFG_EXTI_LINEB);
+    LL_EXTI_SetEXTISource(SYSCFG_EXTI_PORTC, SYSCFG_EXTI_LINEC);
+
+    LL_GPIO_SetPinPull(PHASE_B_EXTI_PORT, PHASE_B_EXTI_PIN, LL_GPIO_PULL_NO);
+    LL_GPIO_SetPinPull(PHASE_A_EXTI_PORT, PHASE_A_EXTI_PIN, LL_GPIO_PULL_NO);
+    LL_GPIO_SetPinPull(PHASE_C_EXTI_PORT, PHASE_C_EXTI_PIN, LL_GPIO_PULL_NO);
+ 
+    LL_GPIO_SetPinMode(PHASE_B_EXTI_PORT, PHASE_B_EXTI_PIN, LL_GPIO_MODE_INPUT);
+    LL_GPIO_SetPinMode(PHASE_A_EXTI_PORT, PHASE_A_EXTI_PIN, LL_GPIO_MODE_INPUT);
+    LL_GPIO_SetPinMode(PHASE_C_EXTI_PORT, PHASE_C_EXTI_PIN, LL_GPIO_MODE_INPUT);
+
+    /**/
+    EXTI_InitStruct.Line_0_31 = PHASE_B_LL_EXTI_LINE;
+    EXTI_InitStruct.LineCommand = ENABLE;
+    EXTI_InitStruct.Mode = LL_EXTI_MODE_IT;
+    EXTI_InitStruct.Trigger = LL_EXTI_TRIGGER_RISING;
+    LL_EXTI_Init(&EXTI_InitStruct);
+
+    /**/
+    EXTI_InitStruct.Line_0_31 = PHASE_A_LL_EXTI_LINE;
+    EXTI_InitStruct.LineCommand = ENABLE;
+    EXTI_InitStruct.Mode = LL_EXTI_MODE_IT;
+    EXTI_InitStruct.Trigger = LL_EXTI_TRIGGER_RISING;
+    LL_EXTI_Init(&EXTI_InitStruct);
+
+    /**/
+    EXTI_InitStruct.Line_0_31 = PHASE_C_LL_EXTI_LINE;
+    EXTI_InitStruct.LineCommand = ENABLE;
+    EXTI_InitStruct.Mode = LL_EXTI_MODE_IT;
+    EXTI_InitStruct.Trigger = LL_EXTI_TRIGGER_RISING;
+    LL_EXTI_Init(&EXTI_InitStruct);
+
+    /**/
+    GPIO_InitStruct.Pin = LL_GPIO_PIN_11;
+    GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
+    GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
+    GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
+    GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
+    LL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+    /**/
+    GPIO_InitStruct.Pin = LL_GPIO_PIN_6;
+    GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
+    GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
+    GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
+    GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
+    LL_GPIO_Init(GPIOF, &GPIO_InitStruct);
+
+    /**/
+    GPIO_InitStruct.Pin = LL_GPIO_PIN_7;
+    GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
+    GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
+    GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
+    GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
+    LL_GPIO_Init(GPIOF, &GPIO_InitStruct);
 }
 
 void reloadWatchDogCounter() { LL_IWDG_ReloadCounter(IWDG); }
@@ -789,9 +854,9 @@ void enableCorePeripherals()
     }
 #endif
 
-    NVIC_SetPriority(EXTI4_15_IRQn, 2);
-    NVIC_EnableIRQ(EXTI4_15_IRQn);
-    EXTI->IMR1 |= (1 << 15);
+    NVIC_SetPriority(EXTI2_3_IRQn, 2);
+    NVIC_EnableIRQ(EXTI2_3_IRQn);
+    EXTI->IMR1 |= (1 << 3);
 		#ifdef USE_PULSE_OUT
 		 LL_GPIO_SetPinMode(RPM_PULSE_PORT, RPM_PULSE_PIN, LL_GPIO_MODE_OUTPUT);
 		#endif
