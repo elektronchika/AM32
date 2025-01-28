@@ -806,6 +806,9 @@ void commutate()
         }
         rising = !(step % 2);
     }
+		#ifdef MCU_G031
+				rising = !rising;
+		#endif
     __disable_irq(); // don't let dshot interrupt
     if (!prop_brake_active) {
         comStep(step);
@@ -1677,9 +1680,9 @@ int main(void)
     GPIOA->BRR = LL_GPIO_PIN_11;
 #endif
 #ifdef MCU_G031
-    GPIOF->BSRR = LL_GPIO_PIN_6; // uncomment to take bridge out of standby mode
-                                 // and set oc level
-    GPIOF->BRR = LL_GPIO_PIN_7; // out of standby mode
+    // uncomment to take bridge out of standby mode
+    // and set oc level
+    // out of standby mode
     GPIOA->BRR = LL_GPIO_PIN_11;
 #endif
 
