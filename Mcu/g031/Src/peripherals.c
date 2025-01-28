@@ -22,8 +22,8 @@ void initCorePeripherals(void)
 {
     LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SYSCFG);
     LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_PWR);
-    LL_SYSCFG_EnablePinRemap(LL_SYSCFG_PIN_RMP_PA11);
-    LL_SYSCFG_EnablePinRemap(LL_SYSCFG_PIN_RMP_PA12);
+    //LL_SYSCFG_EnablePinRemap(LL_SYSCFG_PIN_RMP_PA11);
+    //LL_SYSCFG_EnablePinRemap(LL_SYSCFG_PIN_RMP_PA12);
     FLASH->ACR |= FLASH_ACR_PRFTEN; //// prefetch buffer enable
     SystemClock_Config();
     MX_GPIO_Init();
