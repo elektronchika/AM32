@@ -537,7 +537,7 @@ void MX_TIM16_Init(void)
 
     LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_TIM16);
 
-    /* TIM6 interrupt Init */
+    /* TIM16 interrupt Init */
     NVIC_SetPriority(TIM16_IRQn, 2);
     NVIC_EnableIRQ(TIM16_IRQn);
 
@@ -662,8 +662,8 @@ void MX_GPIO_Init(void)
 
 
     LL_GPIO_ResetOutputPin(GPIOA, LL_GPIO_PIN_11);  // stspin specific
-    LL_GPIO_ResetOutputPin(GPIOF, LL_GPIO_PIN_6);   // stspin specific
-    LL_GPIO_ResetOutputPin(GPIOF, LL_GPIO_PIN_7);   // stspin specific
+    //LL_GPIO_ResetOutputPin(GPIOF, LL_GPIO_PIN_6);   // stspin specific
+    //LL_GPIO_ResetOutputPin(GPIOF, LL_GPIO_PIN_7);   // stspin specific
 
     LL_EXTI_SetEXTISource(SYSCFG_EXTI_PORTA, SYSCFG_EXTI_LINEA);
     LL_EXTI_SetEXTISource(SYSCFG_EXTI_PORTB, SYSCFG_EXTI_LINEB);
@@ -706,21 +706,21 @@ void MX_GPIO_Init(void)
     GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
     LL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-    /**/
-    GPIO_InitStruct.Pin = LL_GPIO_PIN_6;
-    GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
-    GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
-    GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
-    GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
-    LL_GPIO_Init(GPIOF, &GPIO_InitStruct);
+//    /**/
+//    GPIO_InitStruct.Pin = LL_GPIO_PIN_6;
+//    GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
+//    GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
+//    GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
+//    GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
+//    LL_GPIO_Init(GPIOF, &GPIO_InitStruct);
 
-    /**/
-    GPIO_InitStruct.Pin = LL_GPIO_PIN_7;
-    GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
-    GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
-    GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
-    GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
-    LL_GPIO_Init(GPIOF, &GPIO_InitStruct);
+//    /**/
+//    GPIO_InitStruct.Pin = LL_GPIO_PIN_7;
+//    GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
+//    GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
+//    GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
+//    GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
+//    LL_GPIO_Init(GPIOF, &GPIO_InitStruct);
 }
 
 void reloadWatchDogCounter() { LL_IWDG_ReloadCounter(IWDG); }
@@ -747,11 +747,9 @@ void enableCorePeripherals()
     LL_TIM_CC_EnableChannel(TIM1, LL_TIM_CHANNEL_CH3N);
 
 #ifdef MCU_G031
-    LL_TIM_CC_EnableChannel(
-        TIM1, LL_TIM_CHANNEL_CH5); // timer used for comparator blanking
+    LL_TIM_CC_EnableChannel(TIM1, LL_TIM_CHANNEL_CH5); // timer used for comparator blanking
 #endif
-    LL_TIM_CC_EnableChannel(TIM1,
-        LL_TIM_CHANNEL_CH4); // timer used for timing adc read
+    LL_TIM_CC_EnableChannel(TIM1,LL_TIM_CHANNEL_CH4); // timer used for timing adc read
     TIM1->CCR4 = 100; // set in 10khz loop to match pwm cycle timed to end of pwm on
 
     /* Enable counter */

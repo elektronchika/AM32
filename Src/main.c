@@ -245,6 +245,10 @@ an settings option)
 #include "DroneCAN/DroneCAN.h"
 #endif
 
+#ifdef MCU_G031
+char input_ready;
+#endif
+
 #include <version.h>
 
 void zcfoundroutine(void);
@@ -1681,8 +1685,7 @@ int main(void)
 #endif
 #ifdef MCU_G031
     // uncomment to take bridge out of standby mode
-    // and set oc level
-    // out of standby mode
+    // and set oc level out of standby mode
     GPIOA->BRR = LL_GPIO_PIN_11;
 #endif
 
@@ -1772,11 +1775,11 @@ int main(void)
 #endif
 
 
-    while (1) {
+while (1) {
 #if defined(FIXED_DUTY_MODE) || defined(FIXED_SPEED_MODE)
         setInput();
 #endif
-#if defined(MCU_F031)
+#if defined(MCU_F031) || defined(MCU_G031)
         if (input_ready) {
             processDshot();
             input_ready = 0;
